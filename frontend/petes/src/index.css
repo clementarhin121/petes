@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  font-style: none;
+  text-decoration: none;
+  color: inherit;
+}

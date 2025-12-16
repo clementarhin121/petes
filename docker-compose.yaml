@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mysql:8
+    container_name: team-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: teamdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3309:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: team-backend
+    restart: always
+    ports:
+      - "5100:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: userpass
+      DB_NAME: teamdb
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend/petes
+    container_name: team-frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
