@@ -1,0 +1,32 @@
+.cityBody {
+  height: 100vh;
+}
+.About-city {
+  min-height: 100vh; /* ensures hero is tall enough but allows scrolling */
+  position: relative;
+  padding: 80px 20px;
+  .city-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    color: #333;
+    h1 {
+      font-size: 36px;
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+}
+.city {
+  height: 70vh;
+  img {
+    margin-top: 2vh;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+}

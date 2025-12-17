@@ -18,20 +18,28 @@ INSERT INTO destinations (name, description, image_url) VALUES
 (
   'New York City, USA',
   'The city that never sleeps, offering world-class entertainment, food, and landmarks.',
-  'https://images.unsplash.com/photo-1549924231-f129b911e442'
+  'https://static.stacker.com/s3fs-public/styles/1280x720/s3/2024-10/shutterstock_1429324979_0.jpg?token=ahWHMXU5'
 ),
 (
   'Tokyo, Japan',
   'A vibrant mix of modern life and traditional culture, known for technology and cuisine.',
-  'https://images.unsplash.com/photo-1549692520-acc6669e2f0c'
+  'https://static.toiimg.com/thumb/57961644.cms?resizemode=75&width=1200&height=900'
 ),
 (
   'Rome, Italy',
   'Explore ancient history, stunning architecture, and authentic Italian cuisine.',
-  'https://images.unsplash.com/photo-1526481280691-906c4c85c1a6'
+  'https://cms.travelnoire.com/cdn-cgi/image/format=auto,slow-connection-quality=30,onerror=redirect/https://cms.travelnoire.com/wp-content/uploads/2018/12/jakob-owens-713984-unsplash.jpg'
 ),
 (
   'Bali, Indonesia',
   'A tropical paradise known for beaches, temples, and lush landscapes.',
-  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e'
+  'https://thebalisun.com/wp-content/uploads/2025/04/Tighter-Security-Present-At-Balis-Top-Tourist-Attractions-.jpg'
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Signup.css";
 import Menu from "../Components/Menu";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -13,11 +14,27 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
+    fetch("http://localhost:5100/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        // Optionally, redirect to login or another page
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
     e.preventDefault();
-    console.log("Signup data:", formData);
-    alert("Signup successful!");
-    setFormData({ name: "", email: "", password: "" });
+    navigate("/signin");
   };
 
   return (

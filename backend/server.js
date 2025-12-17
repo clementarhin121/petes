@@ -37,6 +37,47 @@ app.get("/data", (req, res) => {
   });
 });
 
+app.get("/city/:id", (req, res) => {
+  const cityId = req.params.id;
+  const myswl = "SELECT * FROM destinations WHERE id = ?";
+  db.query(myswl, [cityId], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Query failed" });
+    }
+    res.json(results);
+  });
+});
+
+app.post("/signup", (req, res) => {
+  const { name, email, password } = req.body;
+  const sql =
+    "INSERT INTO users (fullname, email, password_hash) VALUES (?, ?, ?)";
+  db.query(sql, [name, email, password], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Signup failed" });
+    }
+    res.status(201).json({ message: "User created successfully" });
+  });
+});
+
+app.post("/signin", (req, res) => {
+  const { email, password } = req.body;
+  const sql = "SELECT * FROM users WHERE email = ? AND password_hash = ?";
+  db.query(sql, [email, password], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Signin failed" });
+    }
+    if (results.length > 0) {
+      res.json({ message: "Signin successful" });
+    } else {
+      res.status(401).json({ error: "Invalid credentials" });
+    }
+  });
+});
+
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });

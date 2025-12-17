@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./Signin.css";
 import Menu from "../Components/Menu";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,10 +15,20 @@ const Signin = () => {
   };
 
   const handleSubmit = (e) => {
+    fetch("http://localhost:5100/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        // Optionally, redirect to another page upon successful signin
+      });
+    navigate("/");
     e.preventDefault();
-    console.log("Signin data:", formData);
-    alert("Signin successful!");
-    setFormData({ email: "", password: "" });
   };
 
   return (

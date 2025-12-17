@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   db:
     image: mysql:8
@@ -25,6 +27,9 @@ services:
     restart: always
     ports:
       - "5100:5000"
+    volumes:
+      - ./backend:/app # mount backend code for hot reload
+      - /app/node_modules # ensure container node_modules separate
     environment:
       DB_HOST: db
       DB_USER: user
@@ -33,6 +38,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    command: npx nodemon index.js # run Node.js in dev mode with hot reload
 
   frontend:
     build: ./frontend/petes
@@ -40,6 +46,10 @@ services:
     restart: always
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend/petes:/app # mount frontend code for hot reload
+      - /app/node_modules # container node_modules
+    command: npm run dev
     depends_on:
       - backend
 
