@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Signin.css";
 import Menu from "../Components/Menu";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../Contexts/UserContext.jsx";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const { login } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,21 +17,36 @@ const Signin = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    fetch("http://localhost:5100/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        // Optionally, redirect to another page upon successful signin
-      });
-    navigate("/");
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5100/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        alert("Invalid credentials or server error");
+        return;
+      }
+
+      const data = await response.json().catch(() => null);
+
+      if (!data || !data.user) {
+        alert("Login failed: server did not return user");
+        return;
+      }
+
+      // Save user in context
+      login(data.user);
+
+      // Redirect AFTER login
+      navigate("/");
+    } catch (err) {
+      console.error("Signin error:", err);
+      alert("Network or server error");
+    }
   };
 
   return (
@@ -40,23 +58,21 @@ const Signin = () => {
           onSubmit={handleSubmit}>
           <h2>Sign In</h2>
 
-          <label htmlFor="email">Email</label>
+          <label>Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
             required
           />
 
-          <label htmlFor="password">Password</label>
+          <label>Password</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Enter your password"
             required
           />
 

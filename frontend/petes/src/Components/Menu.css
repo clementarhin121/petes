@@ -11,6 +11,16 @@
   z-index: 10;
   width: 100%;
   top: 0;
+  .username {
+    border: none;
+    background-color: transparent;
+    height: 25px;
+    margin-left: 45%;
+    font-size: 0.8rem;
+    color: white;
+    padding-top: 1vh;
+    cursor: pointer;
+  }
 }
 
 .logo {

@@ -65,13 +65,23 @@ app.post("/signup", (req, res) => {
 app.post("/signin", (req, res) => {
   const { email, password } = req.body;
   const sql = "SELECT * FROM users WHERE email = ? AND password_hash = ?";
+
   db.query(sql, [email, password], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: "Signin failed" });
     }
+
     if (results.length > 0) {
-      res.json({ message: "Signin successful" });
+      const user = results[0];
+      // ✅ return the fields you want in frontend
+      res.json({
+        user: {
+          id: user.id,
+          name: user.fullname,
+          email: user.email,
+        },
+      });
     } else {
       res.status(401).json({ error: "Invalid credentials" });
     }

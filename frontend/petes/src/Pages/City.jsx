@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./City.css";
 import Menu from "../Components/Menu";
 import { useParams } from "react-router-dom";
+import Footer from "../Components/Footer";
 
 const City = () => {
   const { id } = useParams();
@@ -31,6 +32,7 @@ const City = () => {
           />
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

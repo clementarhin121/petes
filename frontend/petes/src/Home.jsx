@@ -1,24 +1,17 @@
-// Home.jsx
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.css";
 import Menu from "./Components/Menu";
 import Footer from "./Components/Footer";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./Contexts/UserContext.jsx"; // ✅ import context
 
 const Home = () => {
   const nav = useNavigate();
+  const { user } = useContext(UserContext); // ✅ get current user
 
-  const signup = () => {
-    nav("/signup");
-  };
-
-  const explore = () => {
-    nav("/destinations");
-  };
-
-  const signin = () => {
-    nav("/signin");
-  };
+  const signup = () => nav("/signup");
+  const explore = () => nav("/destinations");
+  const signin = () => nav("/signin");
 
   return (
     <>
@@ -40,19 +33,21 @@ const Home = () => {
               <button className="btn-secondary">Book Now</button>
             </div>
 
-            {/* Auth Buttons */}
-            <div className="hero-auth">
-              <button
-                onClick={signin}
-                className="btn-signin">
-                Sign In
-              </button>
-              <button
-                onClick={signup}
-                className="btn-signup">
-                Sign Up
-              </button>
-            </div>
+            {/* Auth Buttons only if user is NOT logged in */}
+            {!user && (
+              <div className="hero-auth">
+                <button
+                  onClick={signin}
+                  className="btn-signin">
+                  Sign In
+                </button>
+                <button
+                  onClick={signup}
+                  className="btn-signup">
+                  Sign Up
+                </button>
+              </div>
+            )}
           </div>
         </section>
 

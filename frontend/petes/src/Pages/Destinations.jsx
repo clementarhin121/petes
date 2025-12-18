@@ -2,6 +2,7 @@ import React, { useState, useEffect, use } from "react";
 import "./Destinations.css";
 import Menu from "../Components/Menu";
 import { useNavigate } from "react-router-dom";
+import Footer from "../Components/Footer";
 
 const Destinations = () => {
   const [dest, setDest] = useState([]);
@@ -39,6 +40,7 @@ const Destinations = () => {
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
